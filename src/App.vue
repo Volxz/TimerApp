@@ -1,60 +1,86 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+    <v-app-bar app color="primary" dark>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn @click="dialog = true" :text="true">
+
+        <v-icon >mdi-plus-box-outline</v-icon>
+
+
+
       </v-btn>
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Create New Timer</span>
+          </v-card-title>
+          <v-card-text>
+            <v-col cols="12" sm="6" md="4">
+              <v-text-field v-model="name" label="Timer Name" hint="Must Be Unique"></v-text-field>
+            </v-col>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="cancelCreation()">Cancel</v-btn>
+            <v-btn color="blue darken-1" text @click="createNewTimer()">Create</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-app-bar>
 
-    <v-main>
-      <HelloWorld/>
-    </v-main>
+    <v-content>
+      <router-view/>
+    </v-content>
+    <v-footer class="font-weight-medium" fixed>
+      <v-col class="text-center" cols="12">
+        {{ new Date().getFullYear() }} |
+        <strong>
+          Timer -
+          <a href="https://exclnetworks.com" target="_blank">ExclNetworks</a>
+        </strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import socketFunctions from './mixins/socketFunctions'
 
 export default {
-  name: 'App',
+  name: "App",
+  mixins: [socketFunctions],
 
-  components: {
-    HelloWorld,
+  data: () => {
+    return {
+      dialog: false,
+      name: null,
+    };
   },
+  mounted() {
+    this.setWebsocket();
+    this.setTimers();
+  },
+  methods:{
+    cancelCreation: function(){
+      this.name = null;
+      this.dialog = false;
+    },
+    createNewTimer: function(){
+      console.log("name:" + name)
+      if(this.name === "" || !this.name){
+        this.dialog = false;
+        this.name = "";
+      }else{
+        this.createTimer(this.name);
+        this.dialog = false;
+        this.name = "";
+      }
 
-  data: () => ({
-    //
-  }),
+    }
+  }
 };
 </script>
