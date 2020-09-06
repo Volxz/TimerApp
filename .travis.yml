@@ -2,9 +2,17 @@ language: node_js
 node_js:
   - "node"
 
+stages:
+  - name: deploy
+    # require the branch name to be master (note for PRs this is the base branch name)
+    if: branch = master
+
 cache: npm
 
 script: npm run build
 
-after_success:
-  - .travis/push.sh
+deploy:
+  provider: script
+  script: bash scripts/push.sh
+  on:
+    branch: master
