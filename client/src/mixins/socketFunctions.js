@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            this.$store.commit('setWebsocket', io('https://75ad872d9dcd.ngrok.io/'))
+            this.$store.commit('setWebsocket', io())
             console.log("Websocket Set")
         },
         setTimers: function () {
