@@ -4,7 +4,7 @@ import Vue from "vue";
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            this.$store.commit('setWebsocket', io('https://ace0a1e2fc11.ngrok.io'))
+            this.$store.commit('setWebsocket', io('https://6a58b81af370.ngrok.io/'))
             console.log("Websocket Set")
         },
         setTimers: function () {
