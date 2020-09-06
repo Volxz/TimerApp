@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    //Microsoft Authentication Library Instance is stored here.
     websocket: null,
+    edit: true,
     timers: [],
     
 
@@ -15,10 +15,13 @@ export default new Vuex.Store({
 
     setWebsocket(state, val) {state.websocket = val},
     setTimers(state, val) {state.timers = val},
+    setEdit(state, val) {state.edit = val},
+
 
   },
   getters: {
     getWebsocket: state => {return state.websocket},
     getTimers: state => {return state.timers},
+    getEdit: state => {return state.edit},
   },
 })

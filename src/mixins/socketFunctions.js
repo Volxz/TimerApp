@@ -1,10 +1,9 @@
 import io from 'socket.io-client';
-import Vue from "vue";
 
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            this.$store.commit('setWebsocket', io('https://6a58b81af370.ngrok.io/'))
+            this.$store.commit('setWebsocket', io('https://75ad872d9dcd.ngrok.io/'))
             console.log("Websocket Set")
         },
         setTimers: function () {
@@ -20,6 +19,9 @@ let socketFunctions = {
         },
         deleteTimer: function (name) {
             this.getWebsocket.emit('delete-timer', name)
+        },
+        zeroTimer: function (name) {
+            this.getWebsocket.emit('zero-timer', name)
         },
         resetTimer: function (name) {
             this.getWebsocket.emit('reset-timer', name)

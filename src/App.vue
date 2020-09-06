@@ -4,12 +4,11 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn @click="dialog = true" :text="true">
-
+      <v-btn v-if="!getEditmode" @click="dialog = true" :text="true">
         <v-icon >mdi-plus-box-outline</v-icon>
-
-
-
+      </v-btn>
+      <v-btn @click="setEdit(!getEditmode)" :text="true">
+        <v-icon >mdi-grease-pencil</v-icon>
       </v-btn>
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on, attrs }">
@@ -64,10 +63,18 @@ export default {
     this.setWebsocket();
     this.setTimers();
   },
+  computed: {
+    getEditmode() {
+      return this.$store.getters.getEdit;
+    },
+  },
   methods:{
     cancelCreation: function(){
       this.name = null;
       this.dialog = false;
+    },
+    setEdit: function(data){
+      this.$store.commit('setEdit', data)
     },
     createNewTimer: function(){
       console.log("name:" + name)
@@ -76,6 +83,7 @@ export default {
         this.name = "";
       }else{
         this.createTimer(this.name);
+        this.setEdit(true)
         this.dialog = false;
         this.name = "";
       }

@@ -8,29 +8,48 @@
              sm="12"
              xs="12" v-for="timer in formattedTimers" :key="timer.name">
 
-        <v-card :color='changeColor(timer.minLeft, timer.secLeft)'  class="mx-auto" outlined >
+        <v-card :class="{jiggle : !editmode}" :color='changeColor(timer.minLeft, timer.secLeft)' max-width="200"  class="mx-auto" outlined >
           <v-list-item three-line>
             <v-list-item-content>
-              <div class="overline mb-5">{{ timer.name }}</div>
-              <v-list-item-title class="headline mb-1">
-
-
-                  <v-list-item-title class="headline mb-1">{{ timer.timeLeft }}</v-list-item-title>
-
-
-              </v-list-item-title>
+              <div class="headline mb-8 text-center">{{ timer.name }}</div>
+                  <v-list-item-title class="headline mb-4 text-center">{{ timer.timeLeft }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-card-actions>
-            <v-btn @click="deleteTimer(timer.name)" text>Delete</v-btn>
-            <v-btn @click="resetTimer(timer.name)" text>Reset</v-btn>
+            <div v-if="editmode">
+            <v-btn  @click="zeroTimer(timer.name)" left >Zero</v-btn>
+            <v-btn  color="primary" @click="resetTimer(timer.name)" right absolute >Reset</v-btn>
+            </div>
+            <div v-else>
+              <v-btn color="primary" @click="deleteTimer(timer.name)" left >Delete</v-btn>
+            </div>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
+<style>
+@keyframes jiggle {
+  0% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+}
+.jiggle{
+  animation: jiggle 0.2s infinite;
+  -webkit-animation: jiggle 0.2s infinite;
+  -moz-animation-duration: 0.2s;
+  -moz-animation-name: jiggle;
+  -moz-animation-iteration-count: infinite;
+  -webkit-transform: rotate(-1deg);
+  -moz-transform: rotate(-1deg);
+}
+
+</style>
 
 <script>
 // @ is an alias to /src
@@ -62,6 +81,9 @@ export default {
         })
       })
       return timers;
+    },
+    editmode(){
+      return this.$store.getters.getEdit;
     }
 
   },
@@ -111,6 +133,11 @@ export default {
       if(temp<=0 && seconds === 0){
         opacity = 1;
         return "rgba(40, 255, 40,"+opacity+")";
+      }
+      else if(temp==0){
+        opacity = (temp)/2.5;
+        return "rgba(255, 173, 40,"+opacity+")";
+
       }
       else if(temp<=4){
         opacity = (temp)/2.5;
