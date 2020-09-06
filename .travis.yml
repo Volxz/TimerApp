@@ -9,5 +9,5 @@ stages:
 
 cache: npm
 
-script: ./scripts/push.sh
+script: ./scripts/deploy.sh
 
