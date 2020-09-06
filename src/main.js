@@ -4,15 +4,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import VueCountdown from '@chenfengyuan/vue-countdown';
 
-Vue.component(VueCountdown.name, VueCountdown);
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
   vuetify,
   render: function (h) { return h(App) }
-}).$mount('#app')
+}).$mount('#app');
