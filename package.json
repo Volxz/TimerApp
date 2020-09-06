@@ -1,9 +1,9 @@
 {
   "name": "timerapp",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www --max-http-header-size 160000"
   },
   "dependencies": {
     "@pusher/push-notifications-web": "^1.0.2",
