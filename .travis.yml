@@ -9,10 +9,5 @@ stages:
 
 cache: npm
 
-script: npm run build
+script: ./scripts/push.sh
 
-deploy:
-  provider: script
-  script: bash scripts/push.sh
-  on:
-    branch: master
