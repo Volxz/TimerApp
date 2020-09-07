@@ -67,7 +67,7 @@ function sendNotification(name) {
                 "notification":{
                     "title": "Timer " + name + " Expired.",
                     "body": "Timer " + name + " has completed. Click here to view timer status.",
-                    "deep_link": "https://edcfax.azurewebsites.net/"
+                    "deep_link": "https://edctimer.azurewebsites.net/"
                 }
             }
         }
