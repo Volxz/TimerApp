@@ -2,7 +2,7 @@ const CosmosClient = require("@azure/cosmos").CosmosClient;
 const dbContext = require("./databaseContext");
 
 const endpoint = process.env.CosmosEndpoint;
-const key = `/${process.env.CosmosPartitionKey}`;
+const key = process.env.CosmosKey;
 const databaseId  = process.env.CosmosDatabase;
 
 const containerId = "Timers";
@@ -63,4 +63,4 @@ class TimerHelper {
 
 }
 
-module.exports = ContactHelper;
+module.exports = TimerHelper;
