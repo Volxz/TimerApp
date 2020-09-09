@@ -1,6 +1,8 @@
 const axios = require("axios");
-const schedule = require("node-schedule");
-const TimerHelper = require("./database/timer");
+const { v4: uuidv4 } = require('uuid');
+
+
+const TimerHelper = require("./database/TimerHelper");
 let notifications = new Map();
 
 let timerHelper = new TimerHelper();
@@ -39,26 +41,39 @@ exports.init = (io) => {
         socket.on('delete-timer', id => {
             timerHelper.delete(id);
             io.emit("delete-timer", id);
-            cancelNotification(timerName);
+            cancelNotification(id);
         });
 
         socket.on('get-time', () => {
             socket.emit('time-sync', new Date().getTime());
-        })
-    })
+        });
 
+        socket.on('create-timer', async data => {
+            let timer = {
+                id: uuidv4(),
+                name: data.name,
+                expires_at: data.expires_at,
+            };
+            timerHelper.createDocument(timer);
+            if(new Date().getTime() < timer.expires_at) {
+                scheduleNotification(timer.id, timer.expires_at);
+            }
+            io.emit("timer-update", timer);
+        });
+
+    })
 };
 
-function scheduleNotification(name, time) {
-    cancelNotification(name);
+function scheduleNotification(id, time) {
+    cancelNotification(id);
     let job = setTimeout(() => {
-        sendNotification(name);
+        sendNotification(id);
     }, time - new Date().getTime());
-    notifications.set(name, job)
+    notifications.set(id, job)
 }
 
-function cancelNotification(name) {
-    let notification = notifications.get(name);
+function cancelNotification(id) {
+    let notification = notifications.get(id);
     if (notification) {
         clearTimeout(notification)
     }
