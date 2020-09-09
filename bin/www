@@ -3,6 +3,8 @@
 /**
  * Module dependencies.
  */
+require('dotenv').config();
+require('../database/databaseContext').create();
 
 var app = require('../app');
 var debug = require('debug')('timerapp:server');
