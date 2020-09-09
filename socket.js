@@ -13,10 +13,11 @@ exports.init = (io) => {
     });
 
     io.on('connection', socket => {
+        socket.emit('time-sync', new Date().getTime());
+
         timerHelper.getAllTimers().then((data)=>{
             socket.emit("timers", data);
         });
-        socket.emit('time-sync', new Date().getTime());
 
         socket.on('reset-timer', async id => {
             const timer = await timerHelper.getByID(id);
@@ -42,7 +43,7 @@ exports.init = (io) => {
 
         socket.on('delete-timer', id => {
             timerHelper.delete(id);
-            io.emit("delete-timer", id);
+            io.emit("timer-remove", id);
             cancelNotification(id);
         });
 
@@ -58,7 +59,7 @@ exports.init = (io) => {
                 expires_at: data.expires_at,
             };
             timerHelper.createDocument(timer);
-            if(new Date().getTime() < timer.expires_at) {
+            if(timer.expires_at && new Date().getTime() < timer.expires_at) {
                 scheduleNotification(timer.id, timer.expires_at);
             }
             io.emit("timer-update", timer);
