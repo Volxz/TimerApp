@@ -55,18 +55,10 @@ class TimerHelper {
         } 
     }
 
-    async reset(id) {
-        let timer = await this.getByID(id);
-        if(!timer)
-            return;
-        
-        const timerLength = timer.length;
-        timer.expires_at = new Date().getTime() + ( timer.length * 1000);
-
-        const { resource: updatedItem } = await container
+    update(timer) {
+        container
             .item(`${id}`,undefined)
-            .replace(fax);
-        return updatedItem;
+            .replace(timer);
     }
 
 }
