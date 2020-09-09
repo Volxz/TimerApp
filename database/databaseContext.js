@@ -18,9 +18,8 @@ async function create(client, databaseId, containerId) {
     const { container } = await client
         .database(databaseId)
         .containers.createIfNotExists(
-            { id: containerId, partitionKey },
-            { offerThroughput: 400 }
-        );
+            { id: containerId, partitionKey }
+            );
 
     console.log(`Created container:\n${container.id}\n`);
 }
