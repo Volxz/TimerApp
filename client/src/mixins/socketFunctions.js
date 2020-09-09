@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            this.$store.commit('setWebsocket', io())
+            this.$store.commit('setWebsocket', io("localhost:3000"))
             console.log("Websocket Set")
         },
         setTimers: function () {

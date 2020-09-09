@@ -1,12 +1,9 @@
 <template>
   <div>
-    <v-row>
-      <v-col cols="4"
-             xl="3"
-             lg="4"
-             md="6"
-             sm="12"
-             xs="12" v-for="timer in formattedTimers" :key="timer.name">
+    <v-row style="margin-bottom: 100px">
+      <v-col cols="12"
+             sm="4"
+             xs="4" v-for="timer in formattedTimers" :key="timer.name">
 
         <v-card :class="{jiggle : !editmode}" :color='changeColor(timer.minLeft, timer.secLeft)' max-width="200"  class="mx-auto" outlined >
           <v-list-item three-line>
