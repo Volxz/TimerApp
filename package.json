@@ -6,6 +6,7 @@
     "start": "node ./bin/www --max-http-header-size 160000"
   },
   "dependencies": {
+    "@azure/cosmos": "^3.9.1",
     "@pusher/push-notifications-web": "^1.0.2",
     "axios": "^0.20.0",
     "cookie-parser": "~1.4.4",
