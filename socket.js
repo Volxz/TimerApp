@@ -13,7 +13,9 @@ exports.init = (io) => {
     });
 
     io.on('connection', socket => {
-        socket.emit("timers", Array.from(timers));
+        timerHelper.getAllTimers().then((data)=>{
+            socket.emit("timers", data);
+        });
         socket.emit('time-sync', new Date().getTime());
 
         socket.on('reset-timer', async id => {
@@ -52,6 +54,7 @@ exports.init = (io) => {
             let timer = {
                 id: uuidv4(),
                 name: data.name,
+                length: data.length,
                 expires_at: data.expires_at,
             };
             timerHelper.createDocument(timer);
