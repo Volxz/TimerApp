@@ -57,7 +57,7 @@ class TimerHelper {
 
     update(timer) {
         container
-            .item(`${id}`,undefined)
+            .item(`${timer.id}`,undefined)
             .replace(timer);
     }
 
