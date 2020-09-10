@@ -20,6 +20,7 @@
           <v-card-text>
             <v-col cols="12" sm="6" md="4">
               <v-text-field v-model="name" label="Timer Name" hint="Must Be Unique"></v-text-field>
+              <v-text-field v-model="length" label="Timer Length" hint="Time in seconds"></v-text-field>
             </v-col>
           </v-card-text>
           <v-card-actions>
@@ -57,11 +58,11 @@ export default {
     return {
       dialog: false,
       name: null,
+      length: 0,
     };
   },
   mounted() {
     this.setWebsocket();
-    this.setTimers();
   },
   computed: {
     getEditmode() {
@@ -77,15 +78,19 @@ export default {
       this.$store.commit('setEdit', data)
     },
     createNewTimer: function(){
-      console.log("name:" + name)
       if(this.name === "" || !this.name){
         this.dialog = false;
         this.name = "";
+        this.length = 0
       }else{
-        this.createTimer(this.name);
-        this.setEdit(true)
-        this.dialog = false;
+        this.createTimer({
+          name: this.name,
+          length: this.length
+        });
+        this.setEdit(true);
+        this.length = false;
         this.name = "";
+        this.duration = 0
       }
 
     }

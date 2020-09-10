@@ -18,11 +18,11 @@
 
           <v-card-actions>
             <div v-if="editmode">
-            <v-btn  @click="zeroTimer(timer.name)" left >Zero</v-btn>
-            <v-btn  color="primary" @click="resetTimer(timer.name)" right absolute >Reset</v-btn>
+            <v-btn  @click="zeroTimer(timer.id)" left >Zero</v-btn>
+            <v-btn  color="primary" @click="resetTimer(timer.id)" right absolute >Reset</v-btn>
             </div>
             <div v-else>
-              <v-btn color="primary" @click="deleteTimer(timer.name)" left >Delete</v-btn>
+              <v-btn color="primary" @click="deleteTimer(timer.id)" left >Delete</v-btn>
             </div>
           </v-card-actions>
         </v-card>
@@ -71,15 +71,18 @@ export default {
     formattedTimers() {
       let timers = [];
       this.getTimers.forEach( e => {
+        let hasExpirey = e.hasOwnProperty("expires_at");
+        if(!hasExpirey)
+        console.log("Timer " + e.name + " has no expires property. " + JSON.stringify(e));
+
         timers.push({
-          name: e[0],
-          timeLeft: this.timeLeft(e[1]),
-          minLeft: this.minLeft(e[1]),
-          secLeft: this.secLeft(e[1]),
-
-
+          id: e.id,
+          name: e.name,
+          timeLeft: hasExpirey ? this.timeLeft(e.expires_at) : "00:00",
+          minLeft: hasExpirey ? this.minLeft(e.expires_at) : 0,
+          secLeft: hasExpirey ? this.secLeft(e.expires_at) : 0,
         })
-      })
+      });
       return timers;
     },
     editmode(){
@@ -88,18 +91,19 @@ export default {
 
   },
   created(){
-    let self = this;
+    let _this = this;
     setInterval(function () {
-    self.now = new Date().getTime();
+      _this.now = new Date().getTime();
   }, 1000)
   },
   methods: {
     timeLeft: function (timestamp) {
+      //timestamp = timestamp + this.$store.getters.getOffset;
       if(timestamp < this.now){
         return "00:00"
       }
       let timeleft = timestamp - this.now;
-      timeleft = timeleft/1000
+      timeleft = timeleft/1000;
       let secondsLeft = Math.trunc(timeleft) % 60;
       let minutesLeft = Math.trunc(timeleft / 60);
       if(secondsLeft >9){
@@ -110,21 +114,24 @@ export default {
 
     },
     minLeft: function (timestamp) {
-      if(timestamp < this.now){
+      //timestamp = timestamp + this.$store.getters.getOffset;
+
+      if(!timestamp || timestamp < this.now){
         return 0
       }
       let timeleft = timestamp - this.now;
-      timeleft = timeleft/1000
-      let minutesLeft = Math.trunc(timeleft / 60);
-      return minutesLeft;
+      timeleft = timeleft/1000;
+      return Math.trunc(timeleft / 60);
 
     },
     secLeft: function (timestamp) {
-      if(timestamp < this.now){
+      //timestamp = timestamp + this.$store.getters.getOffset;
+
+      if(!timestamp || timestamp < this.now){
         return 0
       }
       let timeleft = timestamp - this.now;
-      timeleft = timeleft/1000
+      timeleft = timeleft/1000;
       return Math.trunc(timeleft) % 60;
 
     },
@@ -134,7 +141,7 @@ export default {
         opacity = 1;
         return "rgba(40, 255, 40,"+opacity+")";
       }
-      else if(temp==0){
+      else if(temp===0){
         opacity = (temp)/2.5;
         return "rgba(255, 173, 40,"+opacity+")";
 

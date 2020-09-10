@@ -3,28 +3,34 @@ import io from 'socket.io-client';
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            this.$store.commit('setWebsocket', io())
+            let socket = io(":3000");
+            socket.on('timers', (data) => {
+                this.$store.commit('setTimers', data);
+                console.log("Timer Set");
+            });
+            socket.on('timer-update', (data)=> {
+                this.$store.commit('updateTimer', data)
+            });
+            socket.on('timer-remove', (id) => {
+                this.$store.commit('deleteTimer', id)
+            });
+            socket.on('time-sync', (serverTime) => {
+                this.$store.commit('setOffset', new Date().getTime() - serverTime);
+            });
+            this.$store.commit('setWebsocket', socket);
             console.log("Websocket Set")
         },
-        setTimers: function () {
-            this.getWebsocket.on('timers', (data) => {
-                this.$store.commit('setTimers', data)
-                console.log("Timer Set")
-            })
-
-
+        createTimer: function (timerObj) {
+            this.getWebsocket.emit('create-timer', timerObj)
         },
-        createTimer: function (name) {
-            this.getWebsocket.emit('reset-timer', name)
+        deleteTimer: function (id) {
+            this.getWebsocket.emit('delete-timer', id)
         },
-        deleteTimer: function (name) {
-            this.getWebsocket.emit('delete-timer', name)
+        zeroTimer: function (id) {
+            this.getWebsocket.emit('zero-timer', id)
         },
-        zeroTimer: function (name) {
-            this.getWebsocket.emit('zero-timer', name)
-        },
-        resetTimer: function (name) {
-            this.getWebsocket.emit('reset-timer', name)
+        resetTimer: function (id) {
+            this.getWebsocket.emit('reset-timer', id)
         },
 
     },
@@ -36,5 +42,5 @@ let socketFunctions = {
             return this.$store.getters.getTimers;
         }
     }
-}
+};
 export default socketFunctions;
