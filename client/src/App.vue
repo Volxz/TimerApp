@@ -61,7 +61,7 @@ export default {
       length: 0,
     };
   },
-  mounted() {
+  created() {
     this.setWebsocket();
   },
   computed: {
