@@ -24,10 +24,10 @@ export default new Vuex.Store({
 
         async updateTimer(state, val) {
             let timerIndex = await state.timers.findIndex((obj => obj.id === val.id));
-            if (timerIndex < 0) {
-                state.timers.push(val);
-            } else {
+            if(timerIndex >= 0){
                 state.timers[timerIndex] = val;
+            } else {
+                state.timers.push(val);
             }
         },
 
