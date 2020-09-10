@@ -36,7 +36,7 @@ export default new Vuex.Store({
         },
 
         setOffset(state, val) {
-            state.timers = val
+            state.offset = val
         },
 
         setEdit(state, val) {
