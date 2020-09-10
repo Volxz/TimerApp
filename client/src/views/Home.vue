@@ -65,7 +65,7 @@ export default {
   created() {
     let _this = this;
     setInterval(function () {
-      _this.now = (new Date().getTime()) - _this.getOffset;
+      _this.now = (new Date().getTime()) + _this.getOffset;
     }, 1000);
     console.log("Timers" + this.getTimers)
   },
