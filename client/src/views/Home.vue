@@ -4,7 +4,7 @@
       <v-col
               cols="12"
              sm="4"
-             xs="4" v-for="timer in formatted" :key="timer.name">
+             xs="4" v-for="timer in formattedTimers" :key="timer.id">
 
         <v-card :class="{jiggle : editmode}" max-width="200" class="mx-auto" outlined>
           <v-list-item three-line>
@@ -60,8 +60,6 @@ export default {
   data: () => {
     return {
       now: new Date().getTime(),
-      formatted: []
-
     }
   },
   created() {
@@ -79,20 +77,22 @@ export default {
       return this.$store.getters.getEdit;
     },
     formattedTimers() {
-      let timers = [];
-      if (!(typeof (this.getTimers) === "object")) {
+      if(typeof (this.getTimers) !== "object"){
+        console.log("typeof is not object.");
         return [];
       }
-      this.getTimers.forEach(e => {
+      let timers = [];
+      this.getTimers.forEach( e => {
         let hasExpirey = e.hasOwnProperty("expires_at");
+        if(!hasExpirey)
+          console.log("Timer " + e.name + " has no expires property. " + JSON.stringify(e));
         timers.push({
           id: e.id,
           name: e.name,
           timeLeft: hasExpirey ? (e.expires_at - this.now) / 1000 : 0,
         })
-        timers = this.formatted;
       });
-
+      return timers;
     }
   },
   methods: {
