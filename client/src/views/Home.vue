@@ -105,9 +105,9 @@ export default {
       let Minutes = 0;
       let Hours = 0;
       let HRTime = "";
-      Hours = Math.trunc(time / 3600)
-      Minutes = Math.trunc((time - (Hours * 3600)) / 60)
-      Seconds = Math.trunc(time - ((Minutes * 60) + (Hours * 3600)))
+      Hours = Math.trunc(time / 3600);
+      Minutes = Math.trunc((time - (Hours * 3600)) / 60);
+      Seconds = Math.trunc(time - ((Minutes * 60) + (Hours * 3600)));
       if (Hours > 0) {
         HRTime = HRTime + Hours + ":"
       }
