@@ -59,9 +59,6 @@ exports.init = (io) => {
                 expires_at: data.expires_at,
             };
             timerHelper.createDocument(timer);
-            if(timer.expires_at && new Date().getTime() < timer.expires_at) {
-                scheduleNotification(timer.id, timer.expires_at);
-            }
             io.emit("timer-update", timer);
         });
 
