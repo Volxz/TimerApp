@@ -17,7 +17,7 @@ let socketFunctions = {
                 this.$store.commit('deleteTimer', id)
             });
             socket.on('time-sync', (serverTime) => {
-                this.$store.commit('setOffset', new Date().getTime() - serverTime);
+                this.$store.commit('setOffset', serverTime - new Date().getTime());
             });
             this.$store.commit('setWebsocket', socket);
             console.log("Websocket Set")
