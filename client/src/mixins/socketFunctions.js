@@ -3,14 +3,14 @@ import io from 'socket.io-client';
 let socketFunctions = {
     methods: {
         setWebsocket: function () {
-            let socket = io("localhost:3000");
+            let socket = io();
             socket.on('timers', (data) => {
-                console.log("timers init" + JSON.stringify(data, null, 2))
+                console.log("timers init" + JSON.stringify(data, null, 2));
                 this.$store.commit('setTimers', data);
                 console.log("Timer Set");
             });
             socket.on('timer-update', (data)=> {
-                console.log("timer-update" + JSON.stringify(data, null, 2))
+                console.log("timer-update" + JSON.stringify(data, null, 2));
                 this.$store.commit('updateTimer', data)
             });
             socket.on('timer-remove', (id) => {
