@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         websocket: null,
-        edit: true,
+        edit: false,
         timers: [],
         offset: 0,
     },
@@ -22,8 +22,8 @@ export default new Vuex.Store({
             })
         },
 
-        async updateTimer(state, val) {
-            let timerIndex = await state.timers.findIndex((obj => obj.id === val.id));
+        updateTimer(state, val) {
+            let timerIndex = state.timers.findIndex((obj => obj.id === val.id));
             if(timerIndex >= 0){
                 state.timers[timerIndex] = val;
             } else {
