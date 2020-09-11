@@ -6,11 +6,12 @@
              sm="4"
              xs="4" v-for="timer in formattedTimers" :key="timer.id">
 
-        <v-card :class="{jiggle : editmode}" max-width="200" class="mx-auto" outlined>
+        <v-card :class="{jiggle : editmode, card : true}" :style="{'border-color' : borderColor(timer.timeLeft, timer.length) }" max-width="200" class="mx-auto" outlined>
           <v-list-item three-line>
             <v-list-item-content>
               <div class="headline mb-8 text-center">{{ timer.name }}</div>
               <v-list-item-title class="headline mb-4 text-center">{{ parseTime(timer.timeLeft) }}</v-list-item-title>
+              <v-list-item-title class=" mb-4 text-center">{{ parseTime(timer.length) }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -46,6 +47,10 @@
   -moz-animation-iteration-count: infinite;
   -webkit-transform: rotate(-1deg);
   -moz-transform: rotate(-1deg);
+}
+.card{
+  border-width: 8px !important;
+  border-radius: 10% !important;
 }
 
 </style>
@@ -89,11 +94,12 @@ export default {
         timers.push({
           id: e.id,
           name: e.name,
+          length: e.length,
           timeLeft: hasExpirey ? (e.expires_at - this.now) / 1000 : 0,
         })
       });
       return timers;
-    }
+    },
   },
   methods: {
     //Time in seconds
@@ -114,6 +120,15 @@ export default {
       HRTime += Minutes < 10 ? "0" + Minutes + ":" : Minutes + ":";
       HRTime += Seconds < 10 ? "0" + Seconds : Seconds;
       return HRTime;
+    },
+    borderColor(timeLeft, length){
+        let value = timeLeft/length
+      if(timeLeft <= 0){
+        value = 0;
+      }
+        let hue=((1-value)*120).toString(10);
+        return ["hsl(",hue,",100%,50%)"].join("");
+
     }
   }
 

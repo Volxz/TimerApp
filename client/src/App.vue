@@ -4,7 +4,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn v-if="!getEditmode" @click="dialog = true" :text="true">
+      <v-btn v-if="getEditmode" @click="dialog = true" :text="true">
         <v-icon >mdi-plus-box-outline</v-icon>
       </v-btn>
       <v-btn @click="setEdit(!getEditmode)" :text="true">
@@ -20,7 +20,7 @@
           <v-card-text>
             <v-col cols="12" sm="6" md="4">
               <v-text-field v-model="name" label="Timer Name" hint="Must Be Unique"></v-text-field>
-              <v-text-field v-model="length" label="Timer Length" hint="Time in seconds"></v-text-field>
+              <v-text-field v-model="length" value="15" label="Timer Length" hint="Time in minutes"></v-text-field>
             </v-col>
           </v-card-text>
           <v-card-actions>
@@ -58,7 +58,7 @@ export default {
     return {
       dialog: false,
       name: null,
-      length: 0,
+      length: 15,
     };
   },
   created() {
@@ -81,16 +81,16 @@ export default {
       if(this.name === "" || !this.name){
         this.dialog = false;
         this.name = "";
-        this.length = 0
+        this.length = 15
       }else{
         this.createTimer({
           name: this.name,
-          length: this.length
+          length: this.length * 60
         });
-        this.setEdit(true);
-        this.length = false;
+        this.setEdit(false);
+        this.dialog = false;
         this.name = "";
-        this.duration = 0
+        this.length = 15
       }
 
     }

@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "git-describe": "^4.0.4",
     "register-service-worker": "^1.7.1",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.12",

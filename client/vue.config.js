@@ -8,5 +8,5 @@ module.exports = {
     workboxOptions: {
       swSrc: 'src/assets/service-worker.js',
     }
-  }
+  },
 }
