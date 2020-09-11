@@ -57,6 +57,7 @@ exports.init = (io) => {
                 name: data.name,
                 length: data.length,
                 expires_at: data.expires_at,
+                color: data.color
             };
             timerHelper.createDocument(timer);
             io.emit("timer-update", timer);
